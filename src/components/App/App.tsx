@@ -26,7 +26,7 @@ function App() {
     queryFn: () =>
       fetchNotes({
         page: currentPage,
-        perPage: 10,
+        perPage: 12,
         search: debounceValue,
       }),
     placeholderData: keepPreviousData,
