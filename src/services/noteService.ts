@@ -60,14 +60,15 @@ export async function createNote(note: CreateNoteParams): Promise<Note> {
   }
 }
 
-export async function deleteNote(id: string): Promise<void> {
+export async function deleteNote(id: string): Promise<Note> {
   try {
-    await axios.delete(`/notes/${id}`, {
+    const { data } = await axios.delete<Note>(`/notes/${id}`, {
       headers: {
         Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
       },
     });
-    console.log("DELETED NOTE:", id);
+    console.log("DELETED NOTE:", data);
+    return data; // ✅ Повертаємо об'єкт видаленої нотатки
   } catch (error) {
     console.error("Error delete note:", error);
     throw error;

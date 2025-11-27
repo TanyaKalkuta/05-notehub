@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import css from "./App.module.css";
 import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
-import SearchBox from "../SearchBox/SearchBox ";
+import SearchBox from "../SearchBox/SearchBox";
 import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
 import Loader from "../Loader/Loader";
@@ -40,8 +40,15 @@ function App() {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        {<SearchBox search={search} onChange={setSearch} />}
-        {(isLoading || isFetching) && <Loader />}
+        {
+          <SearchBox
+            onChange={(value) => {
+              setSearch(value);
+              setCurrentPage(1);
+            }}
+          />
+        }
+
         {isError && <ErrorMessage />}
 
         {data && data.totalPages > 1 && (
@@ -56,7 +63,7 @@ function App() {
         </button>
       </header>
       {isError && <p>Error loading notes</p>}
-      {isLoading && <p>Loading...</p>}
+      {(isLoading || isFetching) && <Loader />}
       {data && <NoteList notes={data.notes} />}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>

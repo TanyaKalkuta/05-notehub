@@ -1,5 +1,6 @@
 import css from "./Modal.module.css";
 import { createPortal } from "react-dom";
+import { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,6 +9,21 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, children }: ModalProps) {
+  useEffect(() => {
+    if (!isOpen) return; // ❗важливо: хук запускається завжди, але логіка — тільки коли модалка відкрита
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
