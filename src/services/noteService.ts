@@ -10,8 +10,6 @@ export interface FetchNotesParams {
 }
 export interface FetchNotesResponse {
   notes: Note[];
-  page: number;
-  total: number;
   totalPages: number;
 }
 
